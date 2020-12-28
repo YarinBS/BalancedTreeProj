@@ -77,46 +77,11 @@ public class BalancedTree {
         Update_Key(x);
     }
 
-    public void Insert23(Leaf z) {
-        Node y = this.root;
-        while (!y.isLeaf) {
-            if (z.k.value < y.k.value) {
-                y = y.left;
-            } else if (z.k.value < y.middle.k.value) {
-                y = y.left;
-            } else {
-                y = y.right;
-            }
-        }
-        Node x = y.parent;
-        z=Insert_AndSplit(x,z)
-        while (x != this.root) {
-            x = x.parent;
-            if (z != null) {
-                z=Insert_AndSplit(x,z)
-            } else {
-                Update_Key(x);
-            }
-            if(z != null){
-                Node w = new Node();
-                set_Children(w,x,z,null);
-                this.root=w;
-
-
-            }
-
-
-        }
-
-
-    }
-
-
     public Value sumValuesInInterval(Key key1, Key key2) {
 
     }
 
-    public Node Insert_And_Split(Node x, Node z){
+    public Node Insert_And_Split(Node x, Node z) {
         Node l = x.left;
         Node m = x.middle;
         Node r = x.right;
