@@ -67,17 +67,50 @@ public class BalancedTree {
     }
 
     public void set_Children(Node x, Node l, Node m, Node r ){
-        x.left=l;
-        x.middle=m;
-        x.right= r;
-        l.parent=x;
-        if(m!= null){m.parent =x; }
-        if(r!= null){r.parent =x; }
+        x.left = l;
+        x.middle = m;
+        x.right = r;
+        l.parent = x;
+        if (m!= null) {
+            m.parent =x;
+        }
+        if (r!= null) {
+            r.parent =x;
+        }
         Update_Key(x);
-
-
     }
+
     public Value sumValuesInInterval(Key key1, Key key2){
 
+    }
+
+    public Node Insert_And_Split(Node x, Node z){
+        Node l = x.left;
+        Node m = x.middle;
+        Node r = x.right;
+        if (r == null) {
+            if (z.k.value < l.k.value) {
+                set_Children(x, z, l, m);
+            } else if (z.k.value < m.k.value) {
+                set_Children(x, l, z, m);
+            } else {
+                set_Children(x, l, m, z);
+            }
+            return null;
+        }
+        Node y = new Node();
+        if (z.k.value < l.k.value) {
+            set_Children(x, z, l, null);
+            set_Children(y, m, r, null);
+        } else if (z.k.value < m.k.value) {
+            set_Children(x, l, z, null);
+            set_Children(y, m, r, null);
+        } else if (z.k.value < r.k.value) {
+            set_Children(x, l, m, null);
+            set_Children(y, z, r, null);
+        } else {
+            set_Children(y, r, z, null);
+        }
+        return y;
     }
 }
