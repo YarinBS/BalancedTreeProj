@@ -2,6 +2,6 @@
 
 public interface Value
 {
-    Value createCopy();
+    Value createValueCopy();
     void addValue(Value valueToAdd);
 }

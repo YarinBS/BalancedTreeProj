@@ -1,4 +1,4 @@
-class Node<T extends Comparable<?>> {
+class Node<T extends Comparable<?>> implements Value {
     Node left, middle, right;
     T data;
     Node parent;
@@ -29,6 +29,15 @@ class Node<T extends Comparable<?>> {
     }
 
 
+    @Override
+    public Value createValueCopy() {
+        return null;
+    }
+
+    @Override
+    public void addValue(Value valueToAdd) {
+
+    }
 }
 
 

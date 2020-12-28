@@ -4,38 +4,59 @@ public class BalancedTree {
 
     Node root;
 
-
     public BalancedTree() { // Constructor
-            Node x =new Node();
-            Node l = new Leaf();
-            Node m = new Leaf();
-            l.k= new NodeKey(Integer.MIN_VALUE);
-            m.k = new NodeKey(Integer.MAX_VALUE);
-            l.parent= x;
-            m.parent= x;
-            x.k = new NodeKey(Integer.MAX_VALUE);
-            x.left= l;
-            x.middle = m;
-            this.root= x;
+        Node x = new Node();
+        Node l = new Leaf();
+        Node m = new Leaf();
+        l.k= new NodeKey(Integer.MIN_VALUE);
+        m.k = new NodeKey(Integer.MAX_VALUE);
+        l.parent= x;
+        m.parent= x;
+        x.k = new NodeKey(Integer.MAX_VALUE);
+        x.left= l;
+        x.middle = m;
+        this.root= x;
     }
-//
-//    public void delete(Key key) {
-//
-//    }
-//
-//    public Value search(Key key){
-//
-//    }
-//
-//    public int rank(Key key){
-//
-//    }
-//
-//    public Key select(int index){
-//
-//    }
-//
-//    public Value sumValuesInInterval(Key key1, Key key2){
-//
-//    }
+
+    public void insert(Key newKey, Value newValue){
+
+    }
+
+    public void delete(Key key) {
+
+    }
+
+    public Node Search23(Node x, NodeKey k){
+        if (x.isLeaf){
+            if (x.k.value == k.value){
+                return x;
+            }
+            else return null;
+        }
+        if (k.value <= x.left.k.value){
+            return Search23(x.left, k);
+        }
+        else if (k.value <= x.middle.k.value){
+            return Search23(x.middle, k);
+        }
+        else {
+            return Search23(x.right, k);
+        }
+    }
+
+    public Value search(NodeKey key){
+        return Search23(this.root, key);
+    }
+
+    public int rank(Key key){
+
+    }
+
+    public Key select(int index){
+
+    }
+
+    public Value sumValuesInInterval(Key key1, Key key2){
+
+    }
 }

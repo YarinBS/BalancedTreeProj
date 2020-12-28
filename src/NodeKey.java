@@ -1,4 +1,4 @@
-public class NodeKey implements Key {
+public class NodeKey implements Key, Value {
 
     int value;
     public NodeKey(int n){
@@ -14,5 +14,15 @@ public class NodeKey implements Key {
     @Override
     public int compareTo(Key o) {
         return 0;
+    }
+
+    @Override
+    public Value createValueCopy() {
+        return null;
+    }
+
+    @Override
+    public void addValue(Value valueToAdd) {
+
     }
 }
