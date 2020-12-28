@@ -1,9 +1,23 @@
 
 
 public class BalancedTree {
-//    public BalancedTree() { // Constructor
-//
-//    }
+
+    Node root;
+
+
+    public BalancedTree() { // Constructor
+            Node x =new Node();
+            Node l = new Leaf();
+            Node m = new Leaf();
+            l.k= new NodeKey(Integer.MIN_VALUE);
+            m.k = new NodeKey(Integer.MAX_VALUE);
+            l.parent= x;
+            m.parent= x;
+            x.k = new NodeKey(Integer.MAX_VALUE);
+            x.left= l;
+            x.middle = m;
+            this.root= x;
+    }
 //
 //    public void delete(Key key) {
 //
