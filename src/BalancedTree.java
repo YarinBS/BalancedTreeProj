@@ -66,6 +66,17 @@ public class BalancedTree {
 
     }
 
+    public void set_Children(Node x, Node l, Node m, Node r ){
+        x.left=l;
+        x.middle=m;
+        x.right= r;
+        l.parent=x;
+        if(m!= null){m.parent =x; }
+        if(r!= null){r.parent =x; }
+        Update_Key(x);
+
+
+    }
     public Value sumValuesInInterval(Key key1, Key key2){
 
     }
