@@ -139,4 +139,43 @@ public class BalancedTree {
         }
         return y;
     }
+
+    public Node Borrow_Or_Merge(Node y){
+        Node z = y.parent;
+        if (y == z.left) {
+            Node x = z.middle;
+            if (x.right != null) {
+                set_Children(y, y.left, x.left, null);
+                set_Children(x, x.middle, x.right, null);
+            } else {
+                set_Children(x, y.left, x.left, x.middle);
+                y = null;
+                set_Children(z, x, z.right, null);
+            }
+            return z;
+        }
+        if (y == z.middle) {
+            Node x = z.left;
+            if (x.right != null) {
+                set_Children(y, x.right, y.left, null);
+                set_Children(x, x.left, x.middle, null);
+            } else {
+                set_Children(x, x.left, x.middle, y.left);
+                y = null;
+                set_Children(z, x, z.right, null);
+            }
+            return z;
+        }
+        Node x = z.middle;
+        if (x.right != null) {
+            set_Children(y, x.right, y.left, null);
+            set_Children(x, x.left, x.middle, null);
+        } else {
+            set_Children(x, x.left, x.middle, y.left);
+            y = null;
+            set_Children(z, z.left, x, null);
+        }
+        return z;
+    }
+
 }
