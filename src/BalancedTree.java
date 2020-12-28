@@ -6,19 +6,16 @@ public class BalancedTree {
 
     public BalancedTree() { // Constructor
         Node x = new Node();
-        Node l = new Leaf();
-        Node m = new Leaf();
-        l.k = new NodeKey(Integer.MIN_VALUE);
-        m.k = new NodeKey(Integer.MAX_VALUE);
-        l.parent = x;
-        m.parent = x;
-        x.k = new NodeKey(Integer.MAX_VALUE);
-        x.left = l;
-        x.middle = m;
         this.root = x;
     }
 
     public void insert(Key newKey, Value newValue) {
+
+        Key keyToInsert = newKey.createCopy();
+        Value valueToInsert = newValue.createCopy();
+        Node n = new Node(keyToInsert,valueToInsert);
+        Insert23(n);
+
 
     }
 
@@ -26,33 +23,34 @@ public class BalancedTree {
 
     }
 
-    public void Update_Key(Node x) {
-        x.k = x.left.k;
+    public void Update_Key(Node x) {//@@@@
+        x.key = x.left.key.createCopy();
         if (x.middle != null) {
-            x.k = x.middle.k;
+            x.key = x.middle.key.createCopy();
         }
         if (x.right != null) {
-            x.k = x.right.k;
+            x.key = x.right.key.createCopy();
         }
     }
 
-    public Node Search23(Node x, NodeKey k) {
-        if (x.isLeaf) {
-            if (x.k.value == k.value) {
+    public Node Search23(Node x, Key k) {
+        if (x.left == null) {
+            if (x.key.compareTo(k)==0) {
                 return x;
             } else return null;
         }
-        if (k.value <= x.left.k.value) {
+        if (k.compareTo(x.left.key)==-1 ||k.compareTo(x.left.key)==0 ) {
             return Search23(x.left, k);
-        } else if (k.value <= x.middle.k.value) {
+        } else if (k.compareTo(x.middle.key)==-1||k.compareTo(x.middle.key)==0) {
             return Search23(x.middle, k);
         } else {
             return Search23(x.right, k);
         }
     }
 
-    public Value search(NodeKey key) {
-        return Search23(this.root, key);
+    public Value search(Key key) {
+        Node n = Search23(this.root, key);
+        return  n.value.createCopy();
     }
 
     public int rank(Key key) {
@@ -84,11 +82,11 @@ public class BalancedTree {
 
     public void Insert23(Node z) {
         Node y = this.root;
-        while (!y.isLeaf) {
-            if (z.k.value < y.k.value) {
+        while (y.left!=null) { // while y not a leaf
+            if (z.key.compareTo(y.key)==-1) { //z > y
                 y = y.left;
-            } else if (z.k.value < y.middle.k.value) {
-                y = y.left;
+            } else if (z.key.compareTo(y.middle.key)==-1) {// z<y
+                y = y.middle;
             } else {
                 y = y.right;
             }
@@ -106,14 +104,8 @@ public class BalancedTree {
                 Node w = new Node();
                 set_Children(w, x, z, null);
                 this.root = w;
-
-
             }
-
-
         }
-
-
     }
 
 
@@ -122,9 +114,9 @@ public class BalancedTree {
         Node m = x.middle;
         Node r = x.right;
         if (r == null) {
-            if (z.k.value < l.k.value) {
+            if (z.key.compareTo(l.key)==-1) {
                 set_Children(x, z, l, m);
-            } else if (z.k.value < m.k.value) {
+            } else if (z.key.compareTo(m.key)==-1) {
                 set_Children(x, l, z, m);
             } else {
                 set_Children(x, l, m, z);
@@ -132,16 +124,17 @@ public class BalancedTree {
             return null;
         }
         Node y = new Node();
-        if (z.k.value < l.k.value) {
+        if (z.key.compareTo(l.key)==-1) {
             set_Children(x, z, l, null);
             set_Children(y, m, r, null);
-        } else if (z.k.value < m.k.value) {
+        } else if (z.key.compareTo(m.key)==-1) {
             set_Children(x, l, z, null);
             set_Children(y, m, r, null);
-        } else if (z.k.value < r.k.value) {
+        } else if (z.key.compareTo(r.key)==-1) {
             set_Children(x, l, m, null);
             set_Children(y, z, r, null);
         } else {
+            set_Children(x, l, m, null);
             set_Children(y, r, z, null);
         }
         return y;
