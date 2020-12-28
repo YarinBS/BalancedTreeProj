@@ -178,4 +178,29 @@ public class BalancedTree {
         return z;
     }
 
+
+    public void delete23(Node x) {
+        Node y = x.parent;
+        if (x == y.left) {
+            set_Children(y, y.middle, y.right, null);
+        } else if (x == y.middle) {
+            set_Children(y, y.left, y.right, null);
+        } else set_Children(y, y.left, y.middle, null);
+        x = null;
+        while (y != null) {
+            if (y.middle == null) {
+                if (y != this.root) {
+                    y = Borrow_Or_Merge(y);
+                } else {
+                    this.root = y.left;
+                }
+                y.left.parent=null;
+                y=null;
+                return;
+            }else Update_Key(y);
+            y=y.parent;
+        }
+
+    }
+
 }
