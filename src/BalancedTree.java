@@ -26,6 +26,16 @@ public class BalancedTree {
 
     }
 
+    public void Update_Key(Node x){
+        x.k = x.left.k;
+        if (x.middle != null){
+            x.k = x.middle.k;
+        }
+        if (x.right != null){
+            x.k = x.right.k;
+        }
+    }
+
     public Node Search23(Node x, NodeKey k){
         if (x.isLeaf){
             if (x.k.value == k.value){
