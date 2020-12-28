@@ -8,17 +8,17 @@ public class BalancedTree {
         Node x = new Node();
         Node l = new Leaf();
         Node m = new Leaf();
-        l.k= new NodeKey(Integer.MIN_VALUE);
+        l.k = new NodeKey(Integer.MIN_VALUE);
         m.k = new NodeKey(Integer.MAX_VALUE);
-        l.parent= x;
-        m.parent= x;
+        l.parent = x;
+        m.parent = x;
         x.k = new NodeKey(Integer.MAX_VALUE);
-        x.left= l;
+        x.left = l;
         x.middle = m;
-        this.root= x;
+        this.root = x;
     }
 
-    public void insert(Key newKey, Value newValue){
+    public void insert(Key newKey, Value newValue) {
 
     }
 
@@ -26,61 +26,93 @@ public class BalancedTree {
 
     }
 
-    public void Update_Key(Node x){
+    public void Update_Key(Node x) {
         x.k = x.left.k;
-        if (x.middle != null){
+        if (x.middle != null) {
             x.k = x.middle.k;
         }
-        if (x.right != null){
+        if (x.right != null) {
             x.k = x.right.k;
         }
     }
 
-    public Node Search23(Node x, NodeKey k){
-        if (x.isLeaf){
-            if (x.k.value == k.value){
+    public Node Search23(Node x, NodeKey k) {
+        if (x.isLeaf) {
+            if (x.k.value == k.value) {
                 return x;
-            }
-            else return null;
+            } else return null;
         }
-        if (k.value <= x.left.k.value){
+        if (k.value <= x.left.k.value) {
             return Search23(x.left, k);
-        }
-        else if (k.value <= x.middle.k.value){
+        } else if (k.value <= x.middle.k.value) {
             return Search23(x.middle, k);
-        }
-        else {
+        } else {
             return Search23(x.right, k);
         }
     }
 
-    public Value search(NodeKey key){
+    public Value search(NodeKey key) {
         return Search23(this.root, key);
     }
 
-    public int rank(Key key){
+    public int rank(Key key) {
 
     }
 
-    public Key select(int index){
+    public Key select(int index) {
 
     }
 
-    public void set_Children(Node x, Node l, Node m, Node r ){
+    public void set_Children(Node x, Node l, Node m, Node r) {
         x.left = l;
         x.middle = m;
         x.right = r;
         l.parent = x;
-        if (m!= null) {
-            m.parent =x;
+        if (m != null) {
+            m.parent = x;
         }
-        if (r!= null) {
-            r.parent =x;
+        if (r != null) {
+            r.parent = x;
         }
         Update_Key(x);
     }
 
-    public Value sumValuesInInterval(Key key1, Key key2){
+    public void Insert23(Leaf z) {
+        Node y = this.root;
+        while (!y.isLeaf) {
+            if (z.k.value < y.k.value) {
+                y = y.left;
+            } else if (z.k.value < y.middle.k.value) {
+                y = y.left;
+            } else {
+                y = y.right;
+            }
+        }
+        Node x = y.parent;
+        z=Insert_AndSplit(x,z)
+        while (x != this.root) {
+            x = x.parent;
+            if (z != null) {
+                z=Insert_AndSplit(x,z)
+            } else {
+                Update_Key(x);
+            }
+            if(z != null){
+                Node w = new Node();
+                set_Children(w,x,z,null);
+                this.root=w;
+
+
+            }
+
+
+        }
+
+
+    }
+
+
+    public Value sumValuesInInterval(Key key1, Key key2) {
 
     }
 
