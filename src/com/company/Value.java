@@ -1,3 +1,5 @@
+package com.company;
+
 public interface Value
 {
     Value createCopy();
