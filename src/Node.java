@@ -21,20 +21,16 @@ class Node<T extends Comparable<?>> {
 
     public int compareTo(Node rsNode) {//  A>B first bigger returns 1, A<B first smaller returns -1
         int ans = 0;
-        if (rsNode.sentinel == null) {
+        if (rsNode.sentinel == null && this.sentinel == null) {
             ans = this.key.compareTo(rsNode.key);
-        }
-        if (rsNode.sentinel == "-inf") {
-            ans =1;
-        }
-        if (rsNode.sentinel == "inf") {
-            ans =-1;
-        }
-        if (this.sentinel == "-inf") {
-            ans =-1;
-        }
-        if (this.sentinel == "inf") {
-            ans =1;
+        } else if (rsNode.sentinel == "-inf") { // B= -inf
+            ans = 1;
+        } else if (rsNode.sentinel == "inf") {
+            ans = -1;
+        } else if (this.sentinel == "-inf") {
+            ans = -1;
+        } else if (this.sentinel == "inf") {
+            ans = 1;
         }
         return ans;
     }

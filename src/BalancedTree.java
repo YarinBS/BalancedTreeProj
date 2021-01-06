@@ -8,8 +8,9 @@ public class BalancedTree {
         Node x = new Node();
         Node l = new Node();
         Node m = new Node();
-        l.sentinel="-inf";
-        m.sentinel="inf";
+        l.sentinel = "-inf";
+        m.sentinel = "inf";
+        x.sentinel = "inf";
         l.parent = x;
         m.parent = x;
 //        l.key = this.root.key.createCopy();
@@ -24,14 +25,7 @@ public class BalancedTree {
         Key keyToInsert = newKey.createCopy();
         Value valueToInsert = newValue.createCopy();
         Node n = new Node(keyToInsert, valueToInsert);
-        if (this.root.key == null) {
-            this.root.key=newKey.createCopy();
-            this.root.value=newValue.createCopy();
-            this.root.left.key = newKey.createCopy();
-            this.root.middle.key = newKey.createCopy();
-
-        } else Insert23(n);
-
+        Insert23(n);
 
     }
 
@@ -42,16 +36,30 @@ public class BalancedTree {
     }
 
     public void Update_Key(Node x) {//@@@@
-        x.key = x.left.key.createCopy();
+        if (x.left.sentinel != null) {
+            x.sentinel = x.left.sentinel;
+            x.key = null;
+        } else {
+            x.sentinel = null;
+            x.key = x.left.key.createCopy();
+        }
         if (x.middle != null) {
-            if(x.middle.sentinel!=null) x.sentinel =x.middle.sentinel;
-            else x.sentinel=null;
-            x.key = x.middle.key.createCopy();
+            if (x.middle.sentinel != null) {
+                x.sentinel = x.middle.sentinel;
+                x.key = null;
+            } else {
+                x.sentinel = null;
+                x.key = x.middle.key.createCopy();
+            }
         }
         if (x.right != null) {
-            if(x.right.sentinel!=null) x.sentinel =x.right.sentinel;
-            else x.sentinel=null;
-            x.key = x.right.key.createCopy();
+            if (x.right.sentinel != null) {
+                x.sentinel = x.right.sentinel;
+                x.key = null;
+            } else {
+                x.sentinel = null;
+                x.key = x.right.key.createCopy();
+            }
         }
     }
 
@@ -107,35 +115,36 @@ public class BalancedTree {
 //    }
 
 
-public void Insert23(Node z) {
-    Node y = this.root;
-    while (y.left != null) { // while y not a leaf
-        if (z.compareTo(y.left)==-1) { //z < y.left
+    public void Insert23(Node z) {
+        Node y = this.root;
+        while (y.left != null) { // while y not a leaf
+            if (z.compareTo(y.left) == -1) { //z < y.left
 
-            y = y.left;
+                y = y.left;
 
-        } else if (z.compareTo(y.middle)==-1) {// z<y.mid
-            y = y.middle;
-        } else {
-            y = y.right;
+            } else if (z.compareTo(y.middle) == -1) {// z<y.mid
+                y = y.middle;
+            } else {
+                y = y.right;
+            }
         }
-    }
-    Node x = y.parent;
-    z = Insert_And_Split(x, z);
-    while (x != this.root) {
-        x = x.parent;
-        if (z != null) {
-            z = Insert_And_Split(x, z);
-        } else {
-            Update_Key(x);
+        Node x = y.parent;
+        z = Insert_And_Split(x, z);
+        while (x != this.root) {
+            x = x.parent;
+            if (z != null) {
+                z = Insert_And_Split(x, z);
+            } else {
+                Update_Key(x);
+            }
         }
         if (z != null) {
             Node w = new Node();
             set_Children(w, x, z, null);
             this.root = w;
         }
+
     }
-}
 
     public Node Insert_And_Split(Node x, Node z) {
         Node l = x.left;
