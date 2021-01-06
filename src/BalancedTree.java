@@ -8,9 +8,8 @@ public class BalancedTree {
         Node x = new Node();
         Node l = new Node();
         Node m = new Node();
-        l.sentinel = "-inf";
-        m.sentinel = "inf";
-        x.sentinel = "inf";
+        l.sentinel="-inf";
+        m.sentinel="inf";
         l.parent = x;
         m.parent = x;
 //        l.key = this.root.key.createCopy();
@@ -25,7 +24,14 @@ public class BalancedTree {
         Key keyToInsert = newKey.createCopy();
         Value valueToInsert = newValue.createCopy();
         Node n = new Node(keyToInsert, valueToInsert);
-        Insert23(n);
+        if (this.root.key == null) {
+            this.root.key=newKey.createCopy();
+            this.root.value=newValue.createCopy();
+            this.root.left.key = newKey.createCopy();
+            this.root.middle.key = newKey.createCopy();
+
+        } else Insert23(n);
+
 
     }
 
@@ -67,32 +73,18 @@ public class BalancedTree {
 
     public void Update_Key(Node x) {//@@@@
         x.size = x.left.size;
-        if (x.left.sentinel != null) {
-            x.sentinel = x.left.sentinel;
-            x.key = null;
-        } else {
-            x.sentinel = null;
-            x.key = x.left.key.createCopy();
-        }
+        x.key = x.left.key.createCopy();
         if (x.middle != null) {
             x.size += x.middle.size;
-            if (x.middle.sentinel != null) {
-                x.sentinel = x.middle.sentinel;
-                x.key = null;
-            } else {
-                x.sentinel = null;
-                x.key = x.middle.key.createCopy();
-            }
+            if(x.middle.sentinel!=null) x.sentinel =x.middle.sentinel;
+            else x.sentinel=null;
+            x.key = x.middle.key.createCopy();
         }
         if (x.right != null) {
             x.size += x.right.size;
-            if (x.right.sentinel != null) {
-                x.sentinel = x.right.sentinel;
-                x.key = null;
-            } else {
-                x.sentinel = null;
-                x.key = x.right.key.createCopy();
-            }
+            if(x.right.sentinel!=null) x.sentinel =x.right.sentinel;
+            else x.sentinel=null;
+            x.key = x.right.key.createCopy();
         }
     }
 
@@ -145,10 +137,28 @@ public class BalancedTree {
         }
         return rank;
     }
-//
-//    public Key select(int index) {
-//
-//    }
+
+    public Node select(int index) { // FIX THIS - returns a pointer to the object with the i'th smallest key, if exists.
+        return Select_Rec(this.root, index);
+    }
+
+    public Node Select_Rec(Node x, int i){
+        if (x.size < i) {
+            return null;
+        }
+        if (x.left == null) {
+            return x;
+        }
+        int s_left = x.left.size;
+        int s_left_middle = x.middle.size + x.left.size;
+        if (i <= s_left) {
+            return Select_Rec(x.left, i);
+        } else if (i <= s_left_middle) {
+            return Select_Rec(x.middle, i - s_left);
+        } else {
+            return Select_Rec(x.right, i - s_left_middle);
+        }
+    }
 
     public void set_Children(Node x, Node l, Node m, Node r) {
         x.left = l;
@@ -164,41 +174,61 @@ public class BalancedTree {
         Update_Key(x);
     }
 
-//    public Value sumValuesInInterval(Key key1, Key key2) {
-//
-//    }
+    public Value sumValuesInInterval(Key key1, Key key2) { // FIX THIS - returns the sum of keys that are smaller or equal to a given value
+        return Sum_Of_Smaller_Rec(key1, 0); - Sum_Of_Smaller_Rec(key2, 0);
+    }
 
-
-    public void Insert23(Node z) {
-        Node y = this.root;
-        while (y.left != null) { // while y not a leaf
-            if (z.compareTo(y.left) == -1) { //z < y.left
-
-                y = y.left;
-
-            } else if (z.compareTo(y.middle) == -1) {// z<y.mid
-                y = y.middle;
+    public int Sum_Of_Smaller_Rec(Node x, int k){
+        if (x.left == null) {
+            if (x.sentinel != "-inf") {
+                if (x.size <= k) {
+                    return x.size;
+                } else {
+                    return 0;
+                }
             } else {
-                y = y.right;
+                return 36606;
             }
         }
-        Node x = y.parent;
-        z = Insert_And_Split(x, z);
-        while (x != this.root) {
-            x = x.parent;
-            if (z != null) {
-                z = Insert_And_Split(x, z);
-            } else {
-                Update_Key(x);
-            }
+        if (k <= x.left.size) {
+            return Sum_Of_Smaller_Rec(x.left, k);
+        } else if (k <- x.middle.size) {
+            return x.left.sum + Sum_Of_Smaller_Rec(x.middle, k); // Add 'sum' to Node
+        } else {
+            return x.left.sum + x.middle.sum + Sum_Of_Smaller_Rec(x.right, k);
+        }
+    }
+
+
+public void Insert23(Node z) {
+    Node y = this.root;
+    while (y.left != null) { // while y not a leaf
+        if (z.compareTo(y.left)==-1) { //z < y.left
+
+            y = y.left;
+
+        } else if (z.compareTo(y.middle)==-1) {// z<y.mid
+            y = y.middle;
+        } else {
+            y = y.right;
+        }
+    }
+    Node x = y.parent;
+    z = Insert_And_Split(x, z);
+    while (x != this.root) {
+        x = x.parent;
+        if (z != null) {
+            z = Insert_And_Split(x, z);
+        } else {
+            Update_Key(x);
         }
         if (z != null) {
             Node w = new Node();
             set_Children(w, x, z, null);
             this.root = w;
         }
-
     }
+}
 
     public Node Insert_And_Split(Node x, Node z) {
         Node l = x.left;
