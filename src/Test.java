@@ -128,60 +128,60 @@ public class Test
         System.out.println(result);
     }
 
-    private void executeSimpleTest(BalancedTree T, MyKey key1, MyKey key2, int index)
-    {
-        printRank(key1,T.rank(key1));
-        printSearch(key1,(MyValue) T.search(key1));
-        printSelect(index,(MyKey) T.select(index));
-        printSumInInterval(key1, key2, (MyValue) T.sumValuesInInterval(key1,key2));
-    }
+//    private void executeSimpleTest(BalancedTree T, MyKey key1, MyKey key2, int index)
+//    {
+//        printRank(key1,T.rank(key1));
+//        printSearch(key1,(MyValue) T.search(key1));
+//        printSelect(index,(MyKey) T.select(index));
+//        printSumInInterval(key1, key2, (MyValue) T.sumValuesInInterval(key1,key2));
+//    }
 
-    private void executeSmallTest()
-    {
-        BalancedTree T = new BalancedTree();
-
-        MyKey[] myKeysArray = new MyKey[Constants.SMALL_TEST_SIZE];
-        MyValue[] myValueArray = new MyValue[Constants.SMALL_TEST_SIZE];
-
-        for(int i =0; i<Constants.SMALL_TEST_SIZE;i++)
-        {
-            myKeysArray[i] = new MyKey("b",i);
-            myValueArray[i] = new MyValue(i);
-            T.insert(myKeysArray[i],myValueArray[i]);
-        }
-
-        for(int i = Constants.SMALL_TEST_SIZE - 1; i >= 0 ;i--)
-        {
-            T.delete(myKeysArray[i]);
-        }
-
-        for(int i = Constants.SMALL_TEST_SIZE - 1; i >= 0 ;i--)
-        {
-            T.insert(myKeysArray[i],myValueArray[i]);
-        }
-
-        for(int i = 0; i<Constants.SMALL_TEST_SIZE;i++)
-        {
-            T.delete(myKeysArray[i]);
-        }
-        MyKey key1 = myKeysArray[0];
-        MyKey key2 = myKeysArray[1];
-        MyValue value = myValueArray[0];
-        value.setValue(50);
-
-        executeSimpleTest(T,key1,key2,1);
-
-        T.insert(key1,value);
-        executeSimpleTest(T,key1,key2,1);
-        key1.setKey("a",2);
-        value.setValue(5);
-        executeSimpleTest(T,key1,key2,1);
-        T.delete(key1);
-        executeSimpleTest(T,key1,key2,1);
-        key1.setKey("b",1);
-        T.delete(key1);
-        executeSimpleTest(T,key1,key2,1);
-    }
+//    private void executeSmallTest()
+//    {
+//        BalancedTree T = new BalancedTree();
+//
+//        MyKey[] myKeysArray = new MyKey[Constants.SMALL_TEST_SIZE];
+//        MyValue[] myValueArray = new MyValue[Constants.SMALL_TEST_SIZE];
+//
+//        for(int i =0; i<Constants.SMALL_TEST_SIZE;i++)
+//        {
+//            myKeysArray[i] = new MyKey("b",i);
+//            myValueArray[i] = new MyValue(i);
+//            T.insert(myKeysArray[i],myValueArray[i]);
+//        }
+//
+//        for(int i = Constants.SMALL_TEST_SIZE - 1; i >= 0 ;i--)
+//        {
+//            T.delete(myKeysArray[i]);
+//        }
+//
+//        for(int i = Constants.SMALL_TEST_SIZE - 1; i >= 0 ;i--)
+//        {
+//            T.insert(myKeysArray[i],myValueArray[i]);
+//        }
+//
+//        for(int i = 0; i<Constants.SMALL_TEST_SIZE;i++)
+//        {
+//            T.delete(myKeysArray[i]);
+//        }
+//        MyKey key1 = myKeysArray[0];
+//        MyKey key2 = myKeysArray[1];
+//        MyValue value = myValueArray[0];
+//        value.setValue(50);
+//
+//        executeSimpleTest(T,key1,key2,1);
+//
+//        T.insert(key1,value);
+//        executeSimpleTest(T,key1,key2,1);
+//        key1.setKey("a",2);
+//        value.setValue(5);
+//        executeSimpleTest(T,key1,key2,1);
+//        T.delete(key1);
+//        executeSimpleTest(T,key1,key2,1);
+//        key1.setKey("b",1);
+//        T.delete(key1);
+//        executeSimpleTest(T,key1,key2,1);
+//    }
 
     private String generateRandomString(Random random)
     {
@@ -198,7 +198,7 @@ public class Test
     {
         Test test = new Test();
         System.out.println("Starting small test...");
-        test.executeSmallTest();
+//        test.executeSmallTest();
         System.out.println("------------------------------------------------------------------");
         System.out.println("Starting test...");
 
@@ -222,72 +222,72 @@ public class Test
             T.insert(myKeysArray[i],myValuesArray[i]);
         }
 
-        int currentIndexToInsert = Constants.INITIAL_DS_SIZE;
-        int randomIndex;
-        MyKey key1;
-        MyKey key2;
-        Constants.Operations operation;
+//        int currentIndexToInsert = Constants.INITIAL_DS_SIZE;
+//        int randomIndex;
+//        MyKey key1;
+//        MyKey key2;
+//        Constants.Operations operation;
+//
+//        key1 = myKeysArray[random.nextInt(myKeysArray.length)];
+//        key2 = myKeysArray[random.nextInt(myKeysArray.length)];
+//        if (key1.compareTo(key2) < 0)
+//        {
+//            test.printSumInInterval(key2,key1,(MyValue) T.sumValuesInInterval(key2,key1));
+//        }
+//        else
+//        {
+//            test.printSumInInterval(key1,key2,(MyValue) T.sumValuesInInterval(key1,key2));
+//        }
+//        test.printSumInInterval(key1,key1,(MyValue) T.sumValuesInInterval(key1,key1));
 
-        key1 = myKeysArray[random.nextInt(myKeysArray.length)];
-        key2 = myKeysArray[random.nextInt(myKeysArray.length)];
-        if (key1.compareTo(key2) < 0)
-        {
-            test.printSumInInterval(key2,key1,(MyValue) T.sumValuesInInterval(key2,key1));
-        }
-        else
-        {
-            test.printSumInInterval(key1,key2,(MyValue) T.sumValuesInInterval(key1,key2));
-        }
-        test.printSumInInterval(key1,key1,(MyValue) T.sumValuesInInterval(key1,key1));
-
-        for (int i = 0; i<Constants.TEST_SIZE;i++)
-        {
-            operation = operationsArray[random.nextInt(operationsArray.length)];
-            randomIndex = random.nextInt(currentIndexToInsert);
-            key1 = myKeysArray[randomIndex];
-            switch (operation)
-            {
-                case RANK:
-                {
-                    test.printRank(key1, T.rank(key1));
-                    break;
-                }
-                case DELETE:
-                {
-                    T.delete(key1);
-                    break;
-                }
-                case INSERT:
-                {
-                    T.insert(myKeysArray[currentIndexToInsert], myValuesArray[currentIndexToInsert]);
-                    currentIndexToInsert += 1;
-                    break;
-                }
-                case SEARCH:
-                {
-                    test.printSearch(key1, (MyValue) T.search(key1));
-                    break;
-                }
-                case SELECT:
-                {
-                    test.printSelect(randomIndex, (MyKey) T.select(randomIndex));
-                    break;
-                }
-                case SUM_VALUES_IN_INTERVAL:
-                {
-                    key1 = myKeysArray[random.nextInt(myKeysArray.length)];
-                    key2 = myKeysArray[random.nextInt(myKeysArray.length)];
-                    if (key1.compareTo(key2) <= 0)
-                    {
-                        test.printSumInInterval(key1, key2, (MyValue) T.sumValuesInInterval(key1, key2));
-                    }
-                    else
-                    {
-                        test.printSumInInterval(key2, key1, (MyValue) T.sumValuesInInterval(key2, key1));
-                    }
-                    break;
-                }
-            }
-        }
+//        for (int i = 0; i<Constants.TEST_SIZE;i++)
+//        {
+//            operation = operationsArray[random.nextInt(operationsArray.length)];
+//            randomIndex = random.nextInt(currentIndexToInsert);
+//            key1 = myKeysArray[randomIndex];
+//            switch (operation)
+//            {
+//                case RANK:
+//                {
+//                    test.printRank(key1, T.rank(key1));
+//                    break;
+//                }
+//                case DELETE:
+//                {
+//                    T.delete(key1);
+//                    break;
+//                }
+//                case INSERT:
+//                {
+//                    T.insert(myKeysArray[currentIndexToInsert], myValuesArray[currentIndexToInsert]);
+//                    currentIndexToInsert += 1;
+//                    break;
+//                }
+//                case SEARCH:
+//                {
+//                    test.printSearch(key1, (MyValue) T.search(key1));
+//                    break;
+//                }
+//                case SELECT:
+//                {
+//                    test.printSelect(randomIndex, (MyKey) T.select(randomIndex));
+//                    break;
+//                }
+//                case SUM_VALUES_IN_INTERVAL:
+//                {
+//                    key1 = myKeysArray[random.nextInt(myKeysArray.length)];
+//                    key2 = myKeysArray[random.nextInt(myKeysArray.length)];
+//                    if (key1.compareTo(key2) <= 0)
+//                    {
+//                        test.printSumInInterval(key1, key2, (MyValue) T.sumValuesInInterval(key1, key2));
+//                    }
+//                    else
+//                    {
+//                        test.printSumInInterval(key2, key1, (MyValue) T.sumValuesInInterval(key2, key1));
+//                    }
+//                    break;
+//                }
+//            }
+//        }
     }
 }
