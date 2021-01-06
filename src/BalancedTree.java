@@ -29,13 +29,44 @@ public class BalancedTree {
 
     }
 
+
     public void delete(Key key) {
-        delete23(searchNode(key));
-
-
+        Node x = Search23(this.root, key);
+        if (x == null) {
+            return;
+        }
+        if (x == this.root) {
+            this.root = null;
+            return;
+        }
+        Node y = x.parent;
+        if (x == y.left) {
+            set_Children(y, y.middle, y.right, null);
+        } else if (x == y.middle) {
+            set_Children(y, y.left, y.right, null);
+        } else if (x == y.right) {
+            set_Children(y, y.left, y.middle, null);
+        }
+        x = null;
+        while (y != null) {
+            if (y.middle == null) {
+                if (y != this.root) {
+                    y = Borrow_Or_Merge(y);
+                } else {
+                    this.root = y.left;
+                    y.left.parent = null;
+                    y = null;
+                    return;
+                }
+            } else {
+                Update_Key(y);
+                y = y.parent;
+            }
+        }
     }
 
     public void Update_Key(Node x) {//@@@@
+        x.size = x.left.size;
         if (x.left.sentinel != null) {
             x.sentinel = x.left.sentinel;
             x.key = null;
@@ -44,6 +75,7 @@ public class BalancedTree {
             x.key = x.left.key.createCopy();
         }
         if (x.middle != null) {
+            x.size += x.middle.size;
             if (x.middle.sentinel != null) {
                 x.sentinel = x.middle.sentinel;
                 x.key = null;
@@ -53,6 +85,7 @@ public class BalancedTree {
             }
         }
         if (x.right != null) {
+            x.size += x.right.size;
             if (x.right.sentinel != null) {
                 x.sentinel = x.right.sentinel;
                 x.key = null;
@@ -64,22 +97,27 @@ public class BalancedTree {
     }
 
     public Node Search23(Node x, Key k) {
+        Node temp = new Node();
+        temp.key = k;
         if (x.left == null) {
-            if (x.key.compareTo(k) == 0) {
+            if (x.compareTo(temp) == 0) {
                 return x;
             } else return null;
         }
-        if (k.compareTo(x.left.key) == -1 || k.compareTo(x.left.key) == 0) {
-            return Search23(x.left, k);
-        } else if (k.compareTo(x.middle.key) == -1 || k.compareTo(x.middle.key) == 0) {
-            return Search23(x.middle, k);
+        if (temp.compareTo(x.left) == -1 || temp.compareTo(x.left) == 0) {
+            return Search23(x.left, k.createCopy());
+        } else if (temp.compareTo(x.middle) == -1 || temp.compareTo(x.middle) == 0) {
+            return Search23(x.middle, k.createCopy());
         } else {
-            return Search23(x.right, k);
+            return Search23(x.right, k.createCopy());
         }
     }
 
     public Value search(Key key) {
         Node n = Search23(this.root, key);
+        if (n == null) {
+            return null;
+        }
         return n.value.createCopy();
     }
 
@@ -88,9 +126,25 @@ public class BalancedTree {
         return n;
     }
 
-//    public int rank(Key key) {
-//
-//    }
+    public int rank(Key key) {
+        Node chosen = Search23(this.root, key);
+        if (chosen == null) {
+            return 0;
+        }
+        Node y = chosen.parent;
+        int rank = 1;
+        while (y != null) {
+            if (chosen == y.middle) {
+                rank = rank + y.left.size;
+            }
+            else if( chosen == y.right){
+                rank = rank + y.left.size + y.middle.size;
+            }
+            chosen = y;
+            y = y.parent;
+        }
+        return rank;
+    }
 //
 //    public Key select(int index) {
 //

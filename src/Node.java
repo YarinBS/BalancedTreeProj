@@ -5,17 +5,21 @@ class Node<T extends Comparable<?>> {
     Key key;
     Value value;
     String sentinel;
+    int size;
 
     public Node() {
+        this.size=0;
     }
 
     public Node(Key key, Value value) {
         this.key = key;
         this.value = value;
+        this.size=1;
     }
 
     public Node(T data) {
         this.data = data;
+        this.size=1;
     }
 
 
