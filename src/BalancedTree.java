@@ -175,10 +175,13 @@ public class BalancedTree {
     }
 
     public Value sumValuesInInterval(Key key1, Key key2) { // FIX THIS - returns the sum of keys that are smaller or equal to a given value
-        return Sum_Of_Smaller_Rec(key1, 0); - Sum_Of_Smaller_Rec(key2, 0);
+
+        int temp= Sum_Of_Smaller_Rec(this.root , key1) - Sum_Of_Smaller_Rec(this.root ,key2);
+        return temp''
     }
 
-    public int Sum_Of_Smaller_Rec(Node x, int k){
+    public int Sum_Of_Smaller_Rec(Node x , Key key){
+        int k=0;
         if (x.left == null) {
             if (x.sentinel != "-inf") {
                 if (x.size <= k) {
