@@ -136,8 +136,7 @@ public class BalancedTree {
         while (y != null) {
             if (chosen == y.middle) {
                 rank = rank + y.left.size;
-            }
-            else if( chosen == y.right){
+            } else if (chosen == y.right) {
                 rank = rank + y.left.size + y.middle.size;
             }
             chosen = y;
@@ -145,10 +144,31 @@ public class BalancedTree {
         }
         return rank;
     }
-//
-//    public Key select(int index) {
-//
-//    }
+
+    public Key select(int index) {
+        Node x = Select_Rec(this.root, index);
+        if (x == null || x.sentinel == "-inf") return null;
+        return x.key.createCopy();
+    }
+
+    public Node Select_Rec(Node x, int i) {
+        if (x.size < i) {
+            return null;
+        }
+        if (x.left == null) {
+            return x;
+        }
+        int s_left = x.left.size;
+        int s_left_middle = x.middle.size + x.left.size;
+        if (i <= s_left) {
+            return Select_Rec(x.left, i);
+        } else if (i <= s_left_middle) {
+            return Select_Rec(x.middle, i - s_left);
+        } else {
+            return Select_Rec(x.right, i - s_left_middle);
+        }
+    }
+
 
     public void set_Children(Node x, Node l, Node m, Node r) {
         x.left = l;

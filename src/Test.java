@@ -119,9 +119,9 @@ public class Test {
     }
 
     private void executeSimpleTest(BalancedTree T, MyKey key1, MyKey key2, int index) {
-        //   printRank(key1,T.rank(key1));
+        printRank(key1,T.rank(key1));
         printSearch(key1, (MyValue) T.search(key1));
-        // printSelect(index,(MyKey) T.select(index));
+         printSelect(index,(MyKey) T.select(index));
         //printSumInInterval(key1, key2, (MyValue) T.sumValuesInInterval(key1,key2));
     }
 
@@ -239,7 +239,8 @@ public class Test {
                     break;
                 }
                 case SELECT: {
-                    //      test.printSelect(randomIndex, (MyKey) T.select(randomIndex));
+                          test.printSelect(randomIndex, (MyKey) T.select(randomIndex));
+//                    System.out.println(i);
                     break;
                 }
                 case SUM_VALUES_IN_INTERVAL: {
