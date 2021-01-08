@@ -1,5 +1,3 @@
-
-
 public class BalancedTree {
 
     Node root;
@@ -13,15 +11,12 @@ public class BalancedTree {
         x.sentinel = "inf";
         l.parent = x;
         m.parent = x;
-//        l.key = this.root.key.createCopy();
-//        m.key = this.root.key.createCopy();
         x.left = l;
         x.middle = m;
         this.root = x;
     }
 
     public void insert(Key newKey, Value newValue) {
-
         Key keyToInsert = newKey.createCopy();
         Value valueToInsert = newValue.createCopy();
         Node n = new Node(keyToInsert, valueToInsert);
@@ -66,6 +61,7 @@ public class BalancedTree {
     }
 
     public void Update_Key(Node x) {//@@@@
+
         x.size = x.left.size;
         if (x.left.sentinel != null) {
             x.sentinel = x.left.sentinel;
@@ -94,7 +90,21 @@ public class BalancedTree {
                 x.key = x.right.key.createCopy();
             }
         }
+        UpdateSum(x);
     }
+
+    public void UpdateSum(Node x) {
+        x.sum = null;
+        if (x.left.sum != null) {
+            x.sum = x.left.sum.createCopy();
+            if (x.middle != null&&x.middle.sum!=null) x.sum.addValue(x.middle.sum.createCopy());
+            if (x.right != null && x.right.sum != null) x.sum.addValue(x.right.sum.createCopy());
+        } else {
+            if (x.middle != null&&x.middle.sum!=null) x.sum = x.middle.sum.createCopy();
+            if (x.right != null && x.right.sum != null) x.sum.addValue(x.right.sum.createCopy());
+        }
+    }
+
 
     public Node Search23(Node x, Key k) {
         Node temp = new Node();
@@ -121,10 +131,6 @@ public class BalancedTree {
         return n.value.createCopy();
     }
 
-    public Node searchNode(Key key) {
-        Node n = Search23(this.root, key);
-        return n;
-    }
 
     public int rank(Key key) {
         Node chosen = Search23(this.root, key);
@@ -169,6 +175,113 @@ public class BalancedTree {
         }
     }
 
+    public void Sum_Of_Current_parent_bigger(Node P, Node trvs, Value currentSum) { // fix
+        if (P.left == trvs) {
+            if (P.middle.sum != null) {
+                currentSum.addValue(P.middle.sum.createCopy());
+                if (P.right != null && P.right.sum != null)
+                    currentSum.addValue(P.right.sum.createCopy());
+            }
+        } else if (P.middle == trvs) {
+            if (P.right != null && P.right.sum != null)
+                currentSum.addValue(P.right.sum.createCopy());
+        }
+    }
+
+    public void Sum_Of_Current_parent_smaller(Node P, Node trvs, Value currentSum) {
+        if (P.right != null && P.right == trvs) {
+            currentSum.addValue(P.middle.sum.createCopy());
+            currentSum.addValue(P.left.sum.createCopy());
+        } else if (P.middle == trvs)
+            currentSum.addValue(P.left.sum.createCopy());
+    }
+
+
+    public Value sumValuesInInterval(Key key1, Key key2) {
+        if (this.root == null) {
+            return null;
+        }
+        if (key2.compareTo(key1) < 0) {
+            return null;
+        }
+        if (key2.compareTo(key1) == 0) {
+            return search(key2);
+        }
+        Node src = Search23(this.root, key1.createCopy());
+        if (src == null) src = Successor23(key1.createCopy());
+        if (src.sentinel == "inf") return null;
+        Node des = Search23(this.root, key2.createCopy());
+        if (des == null) des = Predessor23(key2.createCopy());
+        if (src == des) return src.value.createCopy();
+        Node trvs = src;
+        Node P = trvs.parent;
+        Value sum = src.value.createCopy();
+        while (P.compareTo(des) < 0) {//P<des
+            Sum_Of_Current_parent_bigger(P, trvs, sum);
+            trvs = P;
+            P = P.parent;
+        }
+       Node trvs2 = des;
+        sum.addValue(des.value.createCopy());
+        Node P1 = trvs2.parent;
+
+        while (P1 != P ) {
+            Sum_Of_Current_parent_smaller(P1, trvs2, sum);
+            trvs2 = P1;
+            P1 = P1.parent;
+        }
+        if(P1.right==trvs2&&P1.left==trvs)
+            sum.addValue(P1.middle.sum.createCopy());
+
+        return sum;
+    }
+
+
+    public Node Successor23(Key k) {
+        Node tmp = new Node();
+        tmp.key = k.createCopy();
+        Node x = root;
+        if (x == null) return null;
+        while (x != null) {
+            if (x.left == null) return x; // a leaf
+            if (tmp.compareTo(x.left) < 0) {
+                x = x.left;
+            } else if (x.middle != null && tmp.compareTo(x.middle) < 0) {
+                x = x.middle;
+            } else x = x.right;
+        }
+        return null;
+    }
+
+    public Node TreeMax(Node X) {
+        while (X.left != null) {
+            if (X.right != null) X = X.right;
+            else X = X.middle;
+        }
+        Node P = X.parent;
+        if (P.right == null) return P.left;
+        else return P.middle;
+    }
+
+    public Node TreeMin(Node X) {
+        while (X.left != null) {
+            X = X.left;
+        }
+        Node P = X.parent;
+        return P.middle;
+    }
+
+    public Node Predessor23(Key k) {
+        Node tmp = Successor23(k);
+        if (tmp.sentinel == "inf") return TreeMax(this.root);
+        int num = rank(tmp.key);
+        if (num == 1) return TreeMin(this.root);
+        Key right = select(num - 1);
+        return Search23(this.root, right);
+
+    }
+
+
 
     public void set_Children(Node x, Node l, Node m, Node r) {
         x.left = l;
@@ -183,10 +296,6 @@ public class BalancedTree {
         }
         Update_Key(x);
     }
-
-//    public Value sumValuesInInterval(Key key1, Key key2) {
-//
-//    }
 
 
     public void Insert23(Node z) {
@@ -287,31 +396,6 @@ public class BalancedTree {
             set_Children(z, z.left, x, null);
         }
         return z;
-    }
-
-
-    public void delete23(Node x) {
-        Node y = x.parent;
-        if (x == y.left) {
-            set_Children(y, y.middle, y.right, null);
-        } else if (x == y.middle) {
-            set_Children(y, y.left, y.right, null);
-        } else set_Children(y, y.left, y.middle, null);
-        x = null;
-        while (y != null) {
-            if (y.middle == null) {
-                if (y != this.root) {
-                    y = Borrow_Or_Merge(y);
-                } else {
-                    this.root = y.left;
-                }
-                y.left.parent = null;
-                y = null;
-                return;
-            } else Update_Key(y);
-            y = y.parent;
-        }
-
     }
 
 }

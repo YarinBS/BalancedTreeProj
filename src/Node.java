@@ -6,6 +6,7 @@ class Node<T extends Comparable<?>> {
     Value value;
     String sentinel;
     int size;
+    Value sum;
 
     public Node() {
         this.size=0;
@@ -15,6 +16,7 @@ class Node<T extends Comparable<?>> {
         this.key = key;
         this.value = value;
         this.size=1;
+        this.sum = value;
     }
 
     public Node(T data) {
